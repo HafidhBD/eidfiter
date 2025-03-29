@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="pageTitle">تهنئة عيد الفطر | خزين</title>
+    <link rel="icon" href="https://i.ibb.co/Rrd3G98/images.jpg" sizes="32x32" />
+    <style>
+        @font-face {
+            font-family: 'Suisse Intl Bold';
+            src: url('https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSansArabic/NotoSansArabic-Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Suisse Intl Bold', Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #652c91 0%, #fad0c4 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            touch-action: manipulation;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            position: absolute;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            margin: 0 auto;
+        }
+
+        .container.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #652c91;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .designs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .design-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .design-option img {
+            width: 100px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked + img {
+            border: 3px solid #3498db;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+        }
+
+        .canvas-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 55vh;
+            width: auto;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        input {
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+            font-family: 'Suisse Intl Bold', Arial, sans-serif;
+            text-align: center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #8e44ad 0%, #652c91 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(101, 44, 145, 0.4);
+            margin: 10px 0;
+            min-width: 200px;
+            font-family: 'Suisse Intl Bold', Arial, sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(101, 44, 145, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-family: 'Suisse Intl Bold', Arial, sans-serif;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        .credits {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .credits:hover {
+            color: #3498db;
+            transform: scale(1.05);
+        }
+
+        .download-counter {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #652c91;
+            font-weight: bold;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse-effect {
+            animation: pulse 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <button class="language-switch" onclick="toggleLanguage()">English</button>
+    
+    <div id="nameScreen" class="container active">
+        <img src="https://cdn.salla.sa/cdn-cgi/image/fit=scale-down,width=200,height=200,onerror=redirect,format=auto/EZGZVA/2xJzsdzWIJJ3VJF2V0ZGPiREWvAZhgDlrQWm6Q2z.png" alt="شعار خزين" class="logo">
+        <h2 id="nameTitle">🎉 أدخل اسمك 🎉</h2>
+        <input type="text" id="nameInput" placeholder="اكتب اسمك هنا">
+        <button id="nextButton" class="btn" onclick="goToDesignSelection()">التالي</button>
+        <div class="credits" onclick="openDeveloperWhatsApp()">MADE WITH ❤️ BY HAFIDH</div>
+    </div>
+    
+    <div id="designScreen" class="container">
+        <h2 id="designTitle">🎨 اختر التصميم 🎨</h2>
+        <div class="designs">
+            <label class="design-option">
+                <input type="radio" name="design" value="assets/images/des1.jpg" data-text-x="540" data-text-y="1110">
+                <img src="assets/images/des1.jpg" alt="تصميم 1" loading="lazy">
+            </label>
+            <label class="design-option">
+                <input type="radio" name="design" value="assets/images/des2.jpg" data-text-x="540" data-text-y="1110">
+                <img src="assets/images/des2.jpg" alt="تصميم 2" loading="lazy">
+            </label>
+            <label class="design-option">
+                <input type="radio" name="design" value="assets/images/des3.jpg" data-text-x="540" data-text-y="1110">
+                <img src="assets/images/des3.jpg" alt="تصميم 3" loading="lazy">
+            </label>
+            <label class="design-option">
+                <input type="radio" name="design" value="assets/images/des4.jpg" data-text-x="540" data-text-y="1110">
+                <img src="assets/images/des4.jpg" alt="تصميم 4" loading="lazy">
+            </label>
+            <label class="design-option">
+                <input type="radio" name="design" value="assets/images/des5.jpg" data-text-x="540" data-text-y="1110">
+                <img src="assets/images/des5.jpg" alt="تصميم 5" loading="lazy">
+            </label>
+        </div>
+        
+        <button id="generateButton" class="btn" onclick="generateCard()">إنشاء التهنئة</button>
+        <div class="credits" onclick="openDeveloperWhatsApp()">MADE WITH ❤️ BY HAFIDH</div>
+    </div>
+    
+    <div id="resultScreen" class="container">
+        <div class="canvas-container">
+            <canvas id="greetingCanvas"></canvas>
+        </div>
+        <div class="buttons-container">
+            <a id="downloadButton" class="btn btn-download" href="#" download="تهنئة-عيد-الفطر.png">📥 تحميل التهنئة</a>
+            <button class="btn btn-back" onclick="goBackToName()">🔄 تعديل الاسم</button>
+            <button class="btn btn-back" onclick="goBackToDesign()">🎨 تغيير التصميم</button>
+        </div>
+        <div class="download-counter" id="downloadCounter">تم تحميل <span id="downloadCount">0</span> تهنئة</div>
+        <div class="credits" onclick="openDeveloperWhatsApp()">MADE WITH ❤️ BY HAFIDH</div>
+    </div>
+
+    <script>
+        let selectedDesign = "";
+        let isArabic = true;
+        let currentScreen = "nameScreen";
+        const originalImageWidth = 1080;
+        const originalImageHeight = 1459;
+        let downloadCount = localStorage.getItem('downloadCount') || 0;
+
+        // Initialize download counter display
+        document.getElementById('downloadCount').textContent = downloadCount;
+
+        const designSettings = {
+            "assets/images/des1.png": { x: 540, y: 1100, fontSize: 40 },
+            "assets/images/des2.png": { x: 540, y: 1100, fontSize: 40 },
+            "assets/images/des3.png": { x: 540, y: 1100, fontSize: 40 },
+            "assets/images/des4.png": { x: 540, y: 1100, fontSize: 40 },
+            "assets/images/des5.png": { x: 540, y: 1100, fontSize: 40 }
+        };
+
+        const texts = {
+            arabic: {
+                pageTitle: "تهنئة عيد الفطر | خزين",
+                nameTitle: "🎉 أدخل اسمك 🎉",
+                namePlaceholder: "اكتب اسمك هنا",
+                nextButton: "التالي",
+                designTitle: "🎨 اختر التصميم 🎨",
+                generateButton: "إنشاء التهنئة",
+                downloadButton: "📥 تحميل التهنئة",
+                backToName: "🔄 تعديل الاسم",
+                backToDesign: "🎨 تغيير التصميم",
+                switchToEnglish: "English",
+                downloadCounter: "تم تحميل <span id='downloadCount'>0</span> تهنئة",
+                credits: "MADE WITH ❤️ BY HAFIDH"
+            },
+            english: {
+                pageTitle: "Eid Al-Fitr Greeting | Khazen",
+                nameTitle: "🎉 Enter Your Name 🎉",
+                namePlaceholder: "Type your name here",
+                nextButton: "Next",
+                designTitle: "🎨 Choose Design 🎨",
+                generateButton: "Generate Greeting",
+                downloadButton: "📥 Download Greeting",
+                backToName: "🔄 Edit Name",
+                backToDesign: "🎨 Change Design",
+                switchToArabic: "العربية",
+                downloadCounter: "<span id='downloadCount'>0</span> greetings downloaded",
+                credits: "MADE WITH ❤️ BY HAFIDH"
+            }
+        };
+
+        function toggleLanguage() {
+            isArabic = !isArabic;
+            const language = isArabic ? 'arabic' : 'english';
+            document.documentElement.lang = isArabic ? 'ar' : 'en';
+            document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+
+            document.getElementById("pageTitle").textContent = texts[language].pageTitle;
+            document.getElementById("nameTitle").textContent = texts[language].nameTitle;
+            document.getElementById("nameInput").placeholder = texts[language].namePlaceholder;
+            document.getElementById("nextButton").textContent = texts[language].nextButton;
+            document.getElementById("designTitle").textContent = texts[language].designTitle;
+            document.getElementById("generateButton").textContent = texts[language].generateButton;
+            document.getElementById("downloadButton").textContent = texts[language].downloadButton;
+            document.querySelector(".language-switch").textContent = isArabic ? texts[language].switchToEnglish : texts.arabic.switchToArabic;
+            
+            // Update download counter text
+            const counterElement = document.getElementById("downloadCounter");
+            if (counterElement) {
+                counterElement.innerHTML = isArabic ? 
+                    `تم تحميل <span id="downloadCount">${downloadCount}</span> تهنئة` : 
+                    `<span id="downloadCount">${downloadCount}</span> greetings downloaded`;
+            }
+            
+            // Update credits text (though it's the same in both languages)
+            document.querySelectorAll(".credits").forEach(el => {
+                el.textContent = texts[language].credits;
+            });
+        }
+
+        function showLoading(show) {
+            document.querySelector('.loading').style.display = show ? 'flex' : 'none';
+        }
+
+        function switchScreen(newScreen) {
+            const currentElement = document.getElementById(currentScreen);
+            const newElement = document.getElementById(newScreen);
+            
+            currentElement.classList.remove('active');
+            setTimeout(() => {
+                newElement.classList.add('active');
+                currentScreen = newScreen;
+                
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 400);
+        }
+
+        function goToDesignSelection() {
+            const name = document.getElementById("nameInput").value.trim();
+            if (!name) {
+                const input = document.getElementById("nameInput");
+                input.style.animation = "shake 0.5s";
+                setTimeout(() => input.style.animation = "", 500);
+                
+                alert(isArabic ? "يرجى إدخال الاسم أولاً!" : "Please enter your name first!");
+                return;
+            }
+            
+            const button = document.getElementById("nextButton");
+            button.classList.add("pulse-effect");
+            setTimeout(() => button.classList.remove("pulse-effect"), 400);
+            
+            switchScreen("designScreen");
+        }
+
+        function selectDesign(imgElement) {
+            const radio = imgElement.previousElementSibling;
+            selectedDesign = radio.value;
+            radio.checked = true;
+            
+            document.querySelectorAll('.design-option img').forEach(img => {
+                img.style.border = '2px solid transparent';
+                img.style.boxShadow = '0 3px 10px rgba(0,0,0,0.1)';
+            });
+            
+            imgElement.style.border = '3px solid #3498db';
+            imgElement.style.boxShadow = '0 0 15px rgba(52, 152, 219, 0.5)';
+        }
+
+        async function generateCard() {
+            if (!selectedDesign) {
+                document.querySelectorAll('.design-option').forEach(option => {
+                    option.style.animation = "shake 0.5s";
+                    setTimeout(() => option.style.animation = "", 500);
+                });
+                
+                alert(isArabic ? "يرجى اختيار تصميم أولاً!" : "Please choose a design first!");
+                return;
+            }
+            
+            const button = document.getElementById("generateButton");
+            button.classList.add("pulse-effect");
+            setTimeout(() => button.classList.remove("pulse-effect"), 400);
+            
+            const name = document.getElementById("nameInput").value;
+            const canvas = document.getElementById("greetingCanvas");
+            const ctx = canvas.getContext("2d");
+            
+            showLoading(true);
+
+            try {
+                const designSetting = designSettings[selectedDesign];
+                const img = await loadImage(selectedDesign);
+                
+                const maxWidth = Math.min(originalImageWidth, window.innerWidth * 0.9);
+                const scaleFactor = maxWidth / originalImageWidth;
+                const displayHeight = originalImageHeight * scaleFactor;
+                
+                canvas.width = originalImageWidth;
+                canvas.height = originalImageHeight;
+                canvas.style.width = `${maxWidth}px`;
+                canvas.style.height = `${displayHeight}px`;
+                
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                ctx.font = `bold ${designSetting.fontSize}px Arial, sans-serif`;
+                ctx.fillStyle = "#FFFFFF";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(name, designSetting.x, designSetting.y);
+                
+                const downloadCanvas = document.createElement('canvas');
+                downloadCanvas.width = originalImageWidth;
+                downloadCanvas.height = originalImageHeight;
+                const downloadCtx = downloadCanvas.getContext('2d');
+                
+                downloadCtx.drawImage(img, 0, 0);
+                downloadCtx.font = `bold ${designSetting.fontSize}px Arial, sans-serif`;
+                downloadCtx.fillStyle = "#FFFFFF";
+                downloadCtx.textAlign = "center";
+                downloadCtx.textBaseline = "middle";
+                downloadCtx.fillText(name, designSetting.x, designSetting.y);
+                
+                const dataURL = downloadCanvas.toDataURL("image/png");
+                document.getElementById("downloadButton").href = dataURL;
+                
+                // Set up download counter increment
+                document.getElementById("downloadButton").addEventListener('click', function() {
+                    incrementDownloadCounter();
+                }, { once: true });
+                
+                switchScreen("resultScreen");
+            } catch (error) {
+                console.error("Error generating card:", error);
+                alert(isArabic ? "حدث خطأ أثناء إنشاء التهنئة. تأكد من أن الصور موجودة في المسار الصحيح." : "Error generating greeting. Please check if images are in correct path.");
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function incrementDownloadCounter() {
+            downloadCount++;
+            localStorage.setItem('downloadCount', downloadCount);
+            document.getElementById('downloadCount').textContent = downloadCount;
+            
+            // Update the counter text in case language was changed
+            const counterElement = document.getElementById("downloadCounter");
+            if (counterElement) {
+                counterElement.innerHTML = isArabic ? 
+                    `تم تحميل <span id="downloadCount">${downloadCount}</span> تهنئة` : 
+                    `<span id="downloadCount">${downloadCount}</span> greetings downloaded`;
+            }
+        }
+
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                
+                // حل خاص للصور المحلية
+                if (src.startsWith('assets/')) {
+                    // إنشاء مسار مطلق للصورة
+                    const baseUrl = window.location.href.replace(/\/[^/]*$/, '');
+                    img.src = baseUrl + '/' + src;
+                } else {
+                    img.crossOrigin = "Anonymous";
+                    img.src = src + (src.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+                }
+                
+                img.onload = () => resolve(img);
+                img.onerror = () => {
+                    console.error("Failed to load image:", src);
+                    reject(new Error(isArabic ? "تعذر تحميل الصورة" : "Failed to load image"));
+                };
+            });
+        }
+
+        function goBackToName() {
+            switchScreen("nameScreen");
+        }
+
+        function goBackToDesign() {
+            switchScreen("designScreen");
+        }
+        
+        function openDeveloperWhatsApp() {
+            window.open('https://wa.me/967772453819', '_blank'); // استبدل برقم الواتساب الفعلي
+        }
+        
+        document.querySelectorAll('.design-option img').forEach(img => {
+            img.addEventListener('click', function() {
+                selectDesign(this);
+            });
+        });
+        
+        document.getElementById("nameInput").addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                goToDesignSelection();
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            if (currentScreen === "resultScreen" && selectedDesign) {
+                const canvas = document.getElementById("greetingCanvas");
+                const maxWidth = Math.min(originalImageWidth, window.innerWidth * 0.9);
+                const scaleFactor = maxWidth / originalImageWidth;
+                const displayHeight = originalImageHeight * scaleFactor;
+                
+                canvas.style.width = `${maxWidth}px`;
+                canvas.style.height = `${displayHeight}px`;
+            }
+        });
+    </script>
+</body>
+</html>
